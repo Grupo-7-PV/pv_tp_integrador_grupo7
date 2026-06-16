@@ -1,24 +1,25 @@
 import { Container, Card, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
-import {login} from '../Services/authService.js';
-import {useAdmin} from '../hook/useAuth.js';
+import { login } from '../Services/authService.js';
+import { useAdmin } from '../hook/useAuth.js';
 
 const Login = () => {
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
     const [sector, setSector] = useState('');
-    const {iniciarSesion} = useAdmin(); 
-    const handleSubmit = async (e) => { e.preventDefault();  
-    
+    const { iniciarSesion } = useAdmin();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         try {
             const perfil = await login(usuario, password, sector);
-             iniciarSesion(perfil);
-             
+            iniciarSesion(perfil);
+
             console.log("Perfil del usuario:", perfil);
-          
+
         } catch (error) {
             console.error("Error al iniciar sesión:", error);
-        
+
         }
     };
 
