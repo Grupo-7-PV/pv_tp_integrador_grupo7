@@ -10,8 +10,8 @@ export const AuthProvider = ({ children }) => {
   const cerrarSesion = () => setUserActivo(null);
 
   return (
-    <AdminContext.Provider value={{ userActivo, iniciarSesion, cerrarSesion }}>
+    <AuthContext.Provider value={{ userActivo, iniciarSesion, cerrarSesion }}>
       {children}
-    </AdminContext.Provider>
+    </AuthContext.Provider>
   );
 };
