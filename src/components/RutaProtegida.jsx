@@ -1,11 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAdmin } from '../hook/useAuth'
+import { useAdmin } from '../hook/useAdmin'
 
 
 const RutaProtegida = () => {
-    const { userActivo } = useAdmin();
-    if(userActivo === null){
-      return <Navigate to= "/login" />;
+    const { adminActivo } = useAdmin();
+    if(adminActivo === null){
+      return <Navigate to= "/login" replace/>;
     }else{
       return <Outlet />
     }
