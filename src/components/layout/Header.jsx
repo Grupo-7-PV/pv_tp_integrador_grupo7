@@ -1,10 +1,10 @@
 import {useNavigate} from 'react-router-dom';
 import {Navbar, Container, Button} from 'react-bootstrap';
-import {useAuth} from '../../hook/useAuth';
+import {useAdmin} from '../../hook/useAdmin';
 
 const Header = () => {
     const navigate = useNavigate();
-    const {userActivo, cerrarSesion}=useAuth();
+    const {adminActivo, cerrarSesion}=useAdmin();
 
     const handleLogout = () => {
         cerrarSesion();
@@ -20,10 +20,10 @@ const Header = () => {
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
 
-                    {userActivo && (
+                    {adminActivo && (
                         <>
                             <Navbar.Text className="me-3 text-white">
-                                {userActivo.nombre} | {userActivo.sector}
+                                {adminActivo.nombre} | {adminActivo.sector}
                             </Navbar.Text>
                             <Button variant="danger" size="sm" onClick={handleLogout}>
                                 Cerrar Sesión
