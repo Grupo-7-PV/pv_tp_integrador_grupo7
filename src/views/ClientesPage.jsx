@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { Container, Spinner, Alert } from 'react-bootstrap';
 import { obtenerClientes } from '../Services/clienteService';
 import TablaClientes from '../components/common/TablaClientes';
+import BuscadorDeClientes from "../components/common/BuscadorDeClientes";
 
 const ClientesPage = () => {
     const [clientes, setClientes] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
+    const [busqueda, setBusqueda] = useState("");
 
     useEffect(() => {
         const cargarDatos = async () => {
@@ -22,6 +24,14 @@ const ClientesPage = () => {
 
         cargarDatos();
     }, []);
+
+    const clientesFiltrados = clientes.filter((cliente) => {
+    const apellido = cliente.name.lastname.toLowerCase();
+    const ciudad = cliente.address.city.toLowerCase();
+    const textoBuscado = busqueda.toLowerCase();
+
+    return apellido.includes(textoBuscado) || ciudad.includes(textoBuscado);
+    });
 
     return (
         <Container className="mt-5">
@@ -43,8 +53,9 @@ const ClientesPage = () => {
 
             {!cargando && !error && (
                 <>
-                    {/* <BuscadorClientes /> */}
-                    <TablaClientes clientes={clientes} />
+                    <BuscadorDeClientes onBuscar={setBusqueda} />
+
+                   <TablaClientes clientes={clientesFiltrados} />
                 </>
             )}
         </Container>
