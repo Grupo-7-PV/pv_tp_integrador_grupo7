@@ -14,4 +14,26 @@ export const obtenerClientes = async () => {
         throw error;
     }
 };
+
+export const crearCliente = async (nuevoCliente) => {
+    try {
+        const respuesta =await fetch('https://fakestoreapi.com/users',{
+            method: 'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(nuevoCliente)
+        });
+
+        if(!respuesta.ok) {
+            throw new Error('Error al intentar crear el nuevo cliente...');
+        }
+
+        const data = await respuesta.json();
+        return data;
+    } catch (error) {
+        console.error("Fallo en la peticion del POST:",error);
+        throw error;
+    }
+}
  
