@@ -1,14 +1,25 @@
 import { useState, useEffect } from "react";
-import { Container, Spinner, Alert } from 'react-bootstrap';
-import { obtenerClientes } from '../Services/clienteService';
+import { Container, Spinner, Alert, Button, Modal } from 'react-bootstrap';
+import { obtenerClientes, crearCliente } from '../Services/clienteService';
 import TablaClientes from '../components/common/TablaClientes';
 import BuscadorDeClientes from "../components/common/BuscadorDeClientes";
+<<<<<<< HEAD
+import FormularioCliente from "../components/common/FormularioCliente";
+import FeedbackToast from "../components/FeedbackToast";
+=======
+>>>>>>> 74a8b8b3a22b72e9019e6adc9884e1cb3a20cade
 
 const ClientesPage = () => {
     const [clientes, setClientes] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [busqueda, setBusqueda] = useState("");
+<<<<<<< HEAD
+
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [toast, setToast] = useState(null); // { estado, id }
+=======
+>>>>>>> 74a8b8b3a22b72e9019e6adc9884e1cb3a20cade
 
     useEffect(() => {
         const cargarDatos = async () => {
@@ -26,6 +37,27 @@ const ClientesPage = () => {
     }, []);
 
     const clientesFiltrados = clientes.filter((cliente) => {
+<<<<<<< HEAD
+        const apellido = cliente.name.lastname.toLowerCase();
+        const ciudad = cliente.address.city.toLowerCase();
+        const textoBuscado = busqueda.toLowerCase();
+
+        return apellido.includes(textoBuscado) || ciudad.includes(textoBuscado);
+    });
+
+    const handleGuardarCliente = async (nuevoCliente) => {
+        try {
+            const respuesta = await crearCliente(nuevoCliente);
+
+            setClientes((prev) => [...prev, { ...nuevoCliente, id: respuesta.id }]);
+            setToast({ estado: 201, id: respuesta.id });
+            setMostrarModal(false);
+        } catch (err) {
+            setToast({ estado: 500, id: null });
+        }
+    };
+
+=======
     const apellido = cliente.name.lastname.toLowerCase();
     const ciudad = cliente.address.city.toLowerCase();
     const textoBuscado = busqueda.toLowerCase();
@@ -33,9 +65,15 @@ const ClientesPage = () => {
     return apellido.includes(textoBuscado) || ciudad.includes(textoBuscado);
     });
 
+>>>>>>> 74a8b8b3a22b72e9019e6adc9884e1cb3a20cade
     return (
         <Container className="mt-5">
-            <h2 className="mb-4"> Directorio de Clientes </h2>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2 className="m-0">Directorio de Clientes</h2>
+                <Button variant="success" onClick={() => setMostrarModal(true)}>
+                    + Nuevo Cliente
+                </Button>
+            </div>
 
             {cargando && (
                 <div className="d-flex justify-content-center my-5">
@@ -55,8 +93,25 @@ const ClientesPage = () => {
                 <>
                     <BuscadorDeClientes onBuscar={setBusqueda} />
 
+<<<<<<< HEAD
+                    <TablaClientes clientes={clientesFiltrados} />
+=======
                    <TablaClientes clientes={clientesFiltrados} />
+>>>>>>> 74a8b8b3a22b72e9019e6adc9884e1cb3a20cade
                 </>
+            )}
+
+            <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} size="lg" centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Nuevo Cliente</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FormularioCliente onGuardar={handleGuardarCliente} />
+                </Modal.Body>
+            </Modal>
+
+            {toast && (
+                <FeedbackToast estado={toast.estado} id={toast.id} />
             )}
         </Container>
     );
