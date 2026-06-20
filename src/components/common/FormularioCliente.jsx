@@ -1,5 +1,5 @@
-import { Form, Row, Col, Button } from 'react-bootstrap';
-import { useState } from 'react';
+import { Form, Row, Col, Button, InputGroup } from 'react-bootstrap';
+import { use, useState } from 'react';
 
 
 const FormularioCliente = ({onGuardar}) => {
@@ -26,16 +26,30 @@ const FormularioCliente = ({onGuardar}) => {
     };
     const validarFormulario = () => {
         const nuevosErrores = {};
-        if (!formData.nombre.trim()) nuevosErrores.nombre = 'El nombre es obligatorio.';
-        if (!formData.apellido.trim()) nuevosErrores.apellido = 'El apellido es obligatorio.';
-        if (!formData.city.trim()) nuevosErrores.city = 'La ciudad es obligatoria.';
+        const textoVal = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
+
+
+        if (!formData.nombre.trim()) {nuevosErrores.nombre = 'El nombre es obligatorio.';
+        }else if (!textoVal.test(formData.nombre)) {
+            nuevosErrores.nombre = 'El nombre solo puede contener letras.';
+        }
+        if (!formData.apellido.trim()) {
+            nuevosErrores.apellido = 'El apellido es obligatorio.';
+        } else if (!textoVal.test(formData.apellido)) {
+            nuevosErrores.apellido = 'El apellido solo puede contener letras.';
+        }
+        if (!formData.ciudad.trim()) {
+            nuevosErrores.ciudad = 'La ciudad es obligatoria.';
+        } else if (!textoVal.test(formData.ciudad)) {
+            nuevosErrores.ciudad = 'La ciudad solo puede contener letras.';
+        }
+
+        
         if (!formData.username.trim()) nuevosErrores.username = 'El nombre de usuario es obligatorio.';
         
         const emailVal = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!formData.email.trim()) {
-            nuevosErrores.email = 'El email es obligatorio.';
-        } else if (!emailVal.test(formData.email)) {
-            nuevosErrores.email = 'El formato del email no es válido.';
+        if (!formData.email.trim()) {nuevosErrores.email = 'El email es obligatorio.';
+        } else if (!emailVal.test(formData.email)) {nuevosErrores.email = 'El formato del email no es válido.';
         }
 
         const phoneVal = /^[0-9]{8,15}$/;
@@ -78,10 +92,12 @@ const FormularioCliente = ({onGuardar}) => {
         }
     };
 
+    const [mostrarPassword, setMostrarPassword] = useState(false);
+
 
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form noValidate onSubmit={handleSubmit}>
             <h4 className="mb-4 text-primary">Alta de Nuevo Cliente</h4>
             <Row className="mb-3">
                 <Col md={6}>
@@ -186,16 +202,25 @@ const FormularioCliente = ({onGuardar}) => {
                 <Col>
                     <Form.Group>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            type="password"
+                        <InputGroup hasValidation>
+                            <Form.Control
+                            type={mostrarPassword ? "text" :"password"}
                             name="password"
                             placeholder="Ingrese contraseña"
                             value={formData.password}
                             onChange={handleChange}
                             isInvalid={!!errores.password}
                         />
+                        <Button 
+                            variant="outline-secondary" 
+                            onClick={() => setMostrarPassword(!mostrarPassword)}
+                            tabIndex="-1" 
+                            >{mostrarPassword ? "Ocultar" : "Ver"}
+                        </Button>
                         <Form.Control.Feedback type="invalid">{errores.password}</Form.Control.Feedback>
 
+                        </InputGroup>
+ 
                     </Form.Group>
                 </Col>
             </Row>
