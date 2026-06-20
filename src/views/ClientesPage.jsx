@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
-import { Container, Spinner, Alert } from 'react-bootstrap';
-import { obtenerClientes } from '../Services/clienteService';
+import { Container, Spinner, Alert, Button, Modal } from 'react-bootstrap';
+import { obtenerClientes, crearCliente } from '../Services/clienteService';
 import TablaClientes from '../components/common/TablaClientes';
 import BuscadorDeClientes from "../components/common/BuscadorDeClientes";
+import FormularioCliente from "../components/common/FormularioCliente";
+import FeedbackToast from "../components/FeedbackToast";
 
 const ClientesPage = () => {
     const [clientes, setClientes] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [busqueda, setBusqueda] = useState("");
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [toast, setToast] = useState(null);
 
     useEffect(() => {
         const cargarDatos = async () => {
@@ -25,17 +29,41 @@ const ClientesPage = () => {
         cargarDatos();
     }, []);
 
-    const clientesFiltrados = clientes.filter((cliente) => {
-    const apellido = cliente.name.lastname.toLowerCase();
-    const ciudad = cliente.address.city.toLowerCase();
-    const textoBuscado = busqueda.toLowerCase();
+        const clientesFiltrados = clientes.filter((cliente) => {
+        const apellido = cliente.name.lastname.toLowerCase();
+        const ciudad = cliente.address.city.toLowerCase();
+        const textoBuscado = busqueda.toLowerCase();
 
-    return apellido.includes(textoBuscado) || ciudad.includes(textoBuscado);
+        return apellido.includes(textoBuscado) || ciudad.includes(textoBuscado);
     });
+
+    const handleGuardarCliente = async (nuevoCliente) => {
+        try {
+            const respuesta = await crearCliente(nuevoCliente);
+
+
+            // Generamos un Id random para evitar el error que tira en consola por problemas de keys
+            /*const idUnicoTemporal = Date.now(); 
+
+            setClientes((prev) => [...prev, { ...nuevoCliente, id: idUnicoTemporal }]);
+            setToast({ estado: 201, id: idUnicoTemporal });*/
+
+            setClientes((prev) => [...prev, { ...nuevoCliente, id: respuesta.id }]);
+            setToast({ estado: 201, id: respuesta.id });
+            setMostrarModal(false);
+        } catch (err) {
+            setToast({ estado: 500, id: null });
+        }
+    };
 
     return (
         <Container className="mt-5">
-            <h2 className="mb-4"> Directorio de Clientes </h2>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2 className="m-0">Directorio de Clientes</h2>
+                <Button variant="success" onClick={() => setMostrarModal(true)}>
+                    + Nuevo Cliente
+                </Button>
+            </div>
 
             {cargando && (
                 <div className="d-flex justify-content-center my-5">
@@ -57,6 +85,19 @@ const ClientesPage = () => {
 
                    <TablaClientes clientes={clientesFiltrados} />
                 </>
+            )}
+
+            <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} size="lg" centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Nuevo Cliente</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FormularioCliente onGuardar={handleGuardarCliente} />
+                </Modal.Body>
+            </Modal>
+
+            {toast && (
+                <FeedbackToast estado={toast.estado} id={toast.id} />
             )}
         </Container>
     );
