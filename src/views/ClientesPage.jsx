@@ -3,17 +3,23 @@ import { Container, Spinner, Alert, Button, Modal } from 'react-bootstrap';
 import { obtenerClientes, crearCliente } from '../Services/clienteService';
 import TablaClientes from '../components/common/TablaClientes';
 import BuscadorDeClientes from "../components/common/BuscadorDeClientes";
+<<<<<<< HEAD
 import FormularioCliente from "../components/common/FormularioCliente";
 import FeedbackToast from "../components/FeedbackToast";
+=======
+>>>>>>> 74a8b8b3a22b72e9019e6adc9884e1cb3a20cade
 
 const ClientesPage = () => {
     const [clientes, setClientes] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [busqueda, setBusqueda] = useState("");
+<<<<<<< HEAD
 
     const [mostrarModal, setMostrarModal] = useState(false);
     const [toast, setToast] = useState(null); // { estado, id }
+=======
+>>>>>>> 74a8b8b3a22b72e9019e6adc9884e1cb3a20cade
 
     useEffect(() => {
         const cargarDatos = async () => {
@@ -31,6 +37,7 @@ const ClientesPage = () => {
     }, []);
 
     const clientesFiltrados = clientes.filter((cliente) => {
+<<<<<<< HEAD
         const apellido = cliente.name.lastname.toLowerCase();
         const ciudad = cliente.address.city.toLowerCase();
         const textoBuscado = busqueda.toLowerCase();
@@ -50,6 +57,15 @@ const ClientesPage = () => {
         }
     };
 
+=======
+    const apellido = cliente.name.lastname.toLowerCase();
+    const ciudad = cliente.address.city.toLowerCase();
+    const textoBuscado = busqueda.toLowerCase();
+
+    return apellido.includes(textoBuscado) || ciudad.includes(textoBuscado);
+    });
+
+>>>>>>> 74a8b8b3a22b72e9019e6adc9884e1cb3a20cade
     return (
         <Container className="mt-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
@@ -77,7 +93,11 @@ const ClientesPage = () => {
                 <>
                     <BuscadorDeClientes onBuscar={setBusqueda} />
 
+<<<<<<< HEAD
                     <TablaClientes clientes={clientesFiltrados} />
+=======
+                   <TablaClientes clientes={clientesFiltrados} />
+>>>>>>> 74a8b8b3a22b72e9019e6adc9884e1cb3a20cade
                 </>
             )}
 
