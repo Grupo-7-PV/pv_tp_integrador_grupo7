@@ -6,7 +6,6 @@ import { useAdmin } from '../hook/useAdmin.js';
 
 
 
-
 const Login = () => {
     const [usuario, setUsuario] = useState('');
     const [password, setPassword] = useState('');
@@ -41,9 +40,9 @@ const Login = () => {
     };
 
     return (<Container
-        className="d-flex align-items-center justify-content-center vh-100"
+        className="login-container d-flex align-items-center justify-content-center"
     >
-        <Card style={{ width: '300px', borderRadius: "30px" }}
+        <Card className='login-card'
         >
             <Card.Body>
                 <Card.Title className="text-center mb-4">
@@ -58,7 +57,7 @@ const Login = () => {
                     <Form.Group className="mb-3">
                         <Form.Control type="text"
                             placeholder="usuario"
-                            style={{ borderRadius: "50px" }}
+                            className='login-input'
                             value={usuario}
                             onChange={e => setUsuario(e.target.value)}>
 
@@ -67,13 +66,13 @@ const Login = () => {
                     <Form.Group className="mb-3">
                         <Form.Control type="password"
                             placeholder="contraseña"
-                            style={{ borderRadius: "50px" }}
+                            className='login-input'
                             value={password}
                             onChange={e => setPassword(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Select style={{ borderRadius: "50px" }}
+                        <Form.Select className='login-select'
                             value={sector}
                             onChange={e => setSector(e.target.value)}>
                             <option value="">Seleccionar sector</option>
@@ -81,7 +80,7 @@ const Login = () => {
                             <option value="Soporte">Soporte</option>
                         </Form.Select>
                     </Form.Group>
-                    <Button type="submit" className="w-100" style={{ borderRadius: "50px" }}>
+                    <Button type="submit" className="boton-ingresar">
                         INGRESAR
                     </Button>
                 </Form>
