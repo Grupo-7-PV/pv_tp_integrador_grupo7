@@ -36,4 +36,44 @@ export const crearCliente = async (nuevoCliente) => {
         throw error;
     }
 }
+
+export const obtenerClientePorID = async (id) => {
+    try{
+        const respuesta = await fetch(`https://fakestoreapi.com/users/${id}`);
+
+
+    
+        if(!respuesta.ok){
+            throw new Error(`Error al obtener el cliente con ID: ${id}`);
+        }
+        const cliente = await respuesta.json();
+        return cliente;
+
+    }catch (error){
+        console.error("Fallo en la petición GET por ID:", error);
+        throw error;
+
+    }
+}
+
+export const eliminarCliente = async (id) => {
+    try{
+        const respuesta = await fetch (`https://fakestoreapi.com/users/${id}`,{
+            method: 'POST',
+        });
+        
+
+        if (!respuesta.ok){
+            throw new Error(`Error al intentar eliminar el cliente con ID: ${id}`);
+        }
+         
+        const data = await respuesta.json();
+        return data;
+
+    }catch (error){
+        console.error("Fallo en la peticion DELETE", error)
+        throw error;
+
+    }
+}
  
