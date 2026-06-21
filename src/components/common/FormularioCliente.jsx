@@ -1,99 +1,8 @@
 import { Form, Row, Col, Button, InputGroup } from 'react-bootstrap';
-import { use, useState } from 'react';
-
+import { useFormCliente } from '../../hook/useFormCliente';
 
 const FormularioCliente = ({onGuardar}) => {
-
-    const[formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
-        email: '',
-        telefono: '',
-        ciudad: '',
-        username: '',
-        password: ''  
-    });
-
-    const [errores, setErrores] = useState({});
-
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData({...formData,[name]:value})
-
-        if(errores[name]){
-            setErrores({...errores, [name]:null});
-        }
-    };
-    const validarFormulario = () => {
-        const nuevosErrores = {};
-        const textoVal = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
-
-
-        if (!formData.nombre.trim()) {nuevosErrores.nombre = 'El nombre es obligatorio.';
-        }else if (!textoVal.test(formData.nombre)) {
-            nuevosErrores.nombre = 'El nombre solo puede contener letras.';
-        }
-        if (!formData.apellido.trim()) {
-            nuevosErrores.apellido = 'El apellido es obligatorio.';
-        } else if (!textoVal.test(formData.apellido)) {
-            nuevosErrores.apellido = 'El apellido solo puede contener letras.';
-        }
-        if (!formData.ciudad.trim()) {
-            nuevosErrores.ciudad = 'La ciudad es obligatoria.';
-        } else if (!textoVal.test(formData.ciudad)) {
-            nuevosErrores.ciudad = 'La ciudad solo puede contener letras.';
-        }
-
-        
-        if (!formData.username.trim()) nuevosErrores.username = 'El nombre de usuario es obligatorio.';
-        
-        const emailVal = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!formData.email.trim()) {nuevosErrores.email = 'El email es obligatorio.';
-        } else if (!emailVal.test(formData.email)) {nuevosErrores.email = 'El formato del email no es válido.';
-        }
-
-        const phoneVal = /^[0-9]{8,15}$/;
-        if (!formData.telefono.trim()) {
-            nuevosErrores.telefono = 'El teléfono es obligatorio.';
-        } else if (!phoneVal.test(formData.telefono)) {
-            nuevosErrores.telefono = 'Ingrese un número válido (8 a 15 dígitos).';
-        }
-
-        if (formData.password.length < 6) {
-            nuevosErrores.password = 'La contraseña debe tener al menos 6 caracteres.';
-        }
-
-        setErrores(nuevosErrores);
-        return Object.keys(nuevosErrores).length === 0; 
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault(); 
-
-        if (validarFormulario()) {
-            const dataAnidada = {
-                email: formData.email,
-                username: formData.username,
-                password: formData.password,
-                name: {
-                    firstname: formData.nombre,
-                    lastname: formData.apellido
-                },
-                address: {
-                    city: formData.ciudad
-                },
-                phone: formData.telefono
-            };
-
-            onGuardar(dataAnidada);
-            setFormData({
-                nombre: '', apellido: '', email: '', telefono: '', ciudad: '', username: '', password: ''
-            });
-        }
-    };
-
-    const [mostrarPassword, setMostrarPassword] = useState(false);
-
+    const {formData,errores,mostrarPassword,togglePassword,handleChange,handleSubmit} = useFormCliente(onGuardar);
 
 
     return (
@@ -213,7 +122,7 @@ const FormularioCliente = ({onGuardar}) => {
                         />
                         <Button 
                             variant="outline-secondary" 
-                            onClick={() => setMostrarPassword(!mostrarPassword)}
+                            onClick={togglePassword}
                             tabIndex="-1" 
                             >{mostrarPassword ? "Ocultar" : "Ver"}
                         </Button>
