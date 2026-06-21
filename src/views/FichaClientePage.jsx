@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Form, Container, Button } from "react-bootstrap";
 import { obtenerClientePorId} from "../services/clienteService";
+import { useAdmin } from '../hook/useAdmin';
 
 const FichaCliente = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [cliente, setCliente] = useState(null);
+    const { adminActivo } = useAdmin();
 
     useEffect(() => {
         const cargarCliente = async () => {
@@ -60,10 +62,16 @@ const FichaCliente = () => {
                         <Form.Label><strong>Contraseña:</strong></Form.Label>
                         <Form.Control type="password" value={cliente.password} disabled />
                     </Form.Group>
-
-                    <Button variant="primary" onClick={() => navigate("/clientes")}>
-                        Volver
-                    </Button>
+                    <div className="d-flex justify-content-between mt-4">
+                        <Button variant="primary" onClick={() => navigate("/clientes")}>
+                            Volver
+                        </Button>
+                        {adminActivo?.sector === "Gerencia" && (
+                            <Button variant="danger" className="fw-bold px-4">
+                                Eliminar Cliente
+                            </Button>
+                        )}
+                    </div>
                 </Card.Body>
             </Card>
         </Container>
