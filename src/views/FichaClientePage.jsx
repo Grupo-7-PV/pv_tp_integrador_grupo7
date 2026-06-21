@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Form, Container, Button } from "react-bootstrap";
-import { obtenerClientePorId} from "../services/clienteService";
+import { obtenerClientePorId, eliminarCliente} from "../services/clienteService";
+import { useAdmin } from '../hook/useAdmin';
 
 const FichaCliente = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [cliente, setCliente] = useState(null);
+    const { adminActivo } = useAdmin();
 
     useEffect(() => {
         const cargarCliente = async () => {
@@ -16,6 +18,19 @@ const FichaCliente = () => {
     
         cargarCliente();
     }, [id]);
+
+    const handleEliminar = async () => {
+        try {
+             const resultado = await eliminarCliente(id);
+              
+             console.log(resultado);
+
+            navigate("/clientes");
+
+        } catch (error) {
+            console.error("Error al eliminar el cliente:", error);
+        }
+    };
 
     if (!cliente) {
         return <Container className="mt-4"><h3>Cargando...</h3></Container>;
@@ -60,10 +75,19 @@ const FichaCliente = () => {
                         <Form.Label><strong>Contraseña:</strong></Form.Label>
                         <Form.Control type="password" value={cliente.password} disabled />
                     </Form.Group>
-
-                    <Button variant="primary" onClick={() => navigate("/clientes")}>
-                        Volver
-                    </Button>
+                    <div className="d-flex justify-content-between mt-4">
+                        <Button variant="primary" onClick={() => navigate("/clientes")}>
+                            Volver
+                        </Button>
+                        {adminActivo?.sector === "Gerencia" && (
+                            <Button variant="danger" 
+                            className="fw-bold px-4"
+                            onClick={handleEliminar}
+                            >
+                                Eliminar Cliente
+                            </Button>
+                        )}
+                    </div>
                 </Card.Body>
             </Card>
         </Container>
