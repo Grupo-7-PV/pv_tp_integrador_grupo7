@@ -72,7 +72,7 @@ export const obtenerClientePorID = async (id) => {
 export const eliminarCliente = async (id) => {
     try{
         const respuesta = await fetch (`https://fakestoreapi.com/users/${id}`,{
-            method: 'POST',
+            method: 'DELETE',
         });
         
 
