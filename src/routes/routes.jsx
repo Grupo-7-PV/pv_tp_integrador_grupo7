@@ -3,6 +3,7 @@ import App from '../App';
 import Login from '../views/Login';
 import RutaProtegida from '../components/RutaProtegida.jsx';
 import ClientesPage from '../views/ClientesPage.jsx';
+import FichaClientePage from '../views/FichaClientePage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
           {
             path:"clientes",
             element:<ClientesPage/>
+          },
+          {
+            path:"clientes/:id",
+            element:<FichaClientePage/>
           }
 
         ],
