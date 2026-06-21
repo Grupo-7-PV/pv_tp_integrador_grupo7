@@ -8,8 +8,7 @@ const FeedbackToast = ({ estado, id }) => {
     return (
         <ToastContainer 
            position="top-end" 
-           className="p-3" 
-           style={{ marginTop: "60px" }}
+           className="toast-container p-3" 
            >
             <Toast autohide delay={3000}
                 bg={estado === 201 ? "success" : "danger"}
