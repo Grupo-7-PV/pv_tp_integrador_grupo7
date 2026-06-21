@@ -3,11 +3,27 @@ import { createContext, useState } from "react";
 export const AdminContext = createContext(null);
 
 export const AdminProvider = ({ children }) => {
-  const [adminActivo, setAdminActivo] = useState(null);
+  const [adminActivo, setAdminActivo] = useState(() => {
+    const sesionGuardada = localStorage.getItem("adminSession");
 
-  const iniciarSesion = (Admin) => setAdminActivo(Admin);
+    return sesionGuardada
+      ? JSON.parse(sesionGuardada)
+      : null;
+  });
 
-  const cerrarSesion = () => setAdminActivo(null);
+  const iniciarSesion = (Admin) => {
+    setAdminActivo(Admin);
+
+    localStorage.setItem(
+      "adminSession",
+      JSON.stringify(Admin)
+    );
+  };
+
+  const cerrarSesion = () => {
+    setAdminActivo(null);
+    localStorage.removeItem("adminSession");
+  };
 
   return (
     <AdminContext.Provider value={{ adminActivo, iniciarSesion, cerrarSesion }}>
