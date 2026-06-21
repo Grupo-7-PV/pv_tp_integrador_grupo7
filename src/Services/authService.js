@@ -1,4 +1,4 @@
-import usuarios from "../source/data";
+import usuarios from "../data/data";
 export function login(username, password, sector) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
