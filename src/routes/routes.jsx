@@ -23,8 +23,8 @@ const router = createBrowserRouter([
             element:<ClientesPage/>
           },
           {
-            path:"clientes/:id",
-            element:<FichaClientePage/>
+            path: "clientes/:id",
+            element: <FichaClientePage />
           }
 
         ],
