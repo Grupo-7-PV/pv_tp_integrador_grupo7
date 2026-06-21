@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Form, Container, Button } from "react-bootstrap";
-import { obtenerClientePorId} from "../services/clienteService";
+import { obtenerClientePorId, eliminarCliente} from "../services/clienteService";
 import { useAdmin } from '../hook/useAdmin';
 
 const FichaCliente = () => {
@@ -18,6 +18,19 @@ const FichaCliente = () => {
     
         cargarCliente();
     }, [id]);
+
+    const handleEliminar = async () => {
+        try {
+             const resultado = await eliminarCliente(id);
+              
+             console.log(resultado);
+
+            navigate("/clientes");
+
+        } catch (error) {
+            console.error("Error al eliminar el cliente:", error);
+        }
+    };
 
     if (!cliente) {
         return <Container className="mt-4"><h3>Cargando...</h3></Container>;
@@ -67,7 +80,10 @@ const FichaCliente = () => {
                             Volver
                         </Button>
                         {adminActivo?.sector === "Gerencia" && (
-                            <Button variant="danger" className="fw-bold px-4">
+                            <Button variant="danger" 
+                            className="fw-bold px-4"
+                            onClick={handleEliminar}
+                            >
                                 Eliminar Cliente
                             </Button>
                         )}
