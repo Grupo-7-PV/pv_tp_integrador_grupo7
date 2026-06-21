@@ -1,8 +1,11 @@
-import { Container, Card, Form, Button } from 'react-bootstrap';
+import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../Services/authService.js';
 import { useAdmin } from '../hook/useAdmin.js';
+
+
+
 
 const Login = () => {
     const [usuario, setUsuario] = useState('');
@@ -10,8 +13,16 @@ const Login = () => {
     const [sector, setSector] = useState('');
     const { iniciarSesion } = useAdmin();
     const navigate = useNavigate();
+    const [error, setError] = useState("")
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setError("");
+
+        if (!usuario || !password || !sector) {
+            setError("Completar todos los campos");
+            return;
+        }
 
         try {
             const perfil = await login(usuario, password, sector);
@@ -19,12 +30,13 @@ const Login = () => {
 
             console.log("Perfil del usuario:", perfil);
 
-            navigate('/clientes')//a completar en modulo B
-            
+            navigate('/clientes')
+
 
         } catch (error) {
             console.error("Error al iniciar sesión:", error);
 
+            setError("Usuario o contraseña incorrectos");
         }
     };
 
@@ -37,6 +49,11 @@ const Login = () => {
                 <Card.Title className="text-center mb-4">
                     Login
                 </Card.Title>
+                {error && (
+                    <Alert variant="danger">
+                        {error}
+                    </Alert>
+                )}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Control type="text"
