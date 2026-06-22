@@ -4,6 +4,7 @@ import { Card, Form, Container, Button } from "react-bootstrap";
 import { obtenerClientePorId, eliminarCliente} from "../services/clienteService";
 import { useAdmin } from '../hook/useAdmin';
 
+
 const FichaCliente = () => {
     const { id } = useParams();
     const navigate = useNavigate();

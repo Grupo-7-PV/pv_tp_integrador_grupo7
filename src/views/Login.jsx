@@ -29,7 +29,7 @@ const Login = () => {
 
             console.log("Perfil del usuario:", perfil);
 
-            navigate('/clientes')
+            navigate('/dashboard')
 
 
         } catch (error) {
