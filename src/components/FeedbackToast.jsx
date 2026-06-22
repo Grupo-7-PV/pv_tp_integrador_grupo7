@@ -1,35 +1,41 @@
 import { ToastContainer, Toast } from "react-bootstrap"
 import { useState } from "react"
 
-const FeedbackToast = ({ estado, id }) => {
+const FeedbackToast = ({ estado, id, tipo }) => {
 
     const [show, setShow] = useState(true)
+
+    const esEliminacion = tipo === "eliminacion";
+    const esExito = estado === 201 || esEliminacion;
 
     return (
         <ToastContainer 
            position="top-end" 
            className="toast-container p-3" 
            >
-            <Toast autohide delay={3000}
-                bg={estado === 201 ? "success" : "danger"}
+            <Toast
+                autohide
+                delay={3000}
+                bg={esExito ? "success" : "danger"}
                 show={show}
-                onClose={() => setShow(false)}
-                autohide>
+                onClose={() => setShow(false)}>
                 <Toast.Header closeButton={false}>
                     <strong className="me-auto">
-                        {estado === 201 ? "Exito" : "Error"}
+                        {esExito ? "Éxito" : "Error"}
                     </strong>
                 </Toast.Header>
 
-                <Toast.Body>
-                    {estado === 201 ? (
+                <Toast.Body className="text-white">
+                    {esEliminacion ? (
+                        "Cliente eliminado correctamente."
+                    ) : estado === 201 ? (
                         <>
                             Cliente creado correctamente
                             <br />
                             ID asignado: {id}
                         </>
                     ) : (
-                        "Error al creador el cliente."
+                        "Error al crear el cliente."
                     )}
                 </Toast.Body>
             </Toast>
