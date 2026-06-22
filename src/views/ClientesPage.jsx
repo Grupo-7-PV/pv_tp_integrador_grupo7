@@ -1,33 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container, Spinner, Alert, Button, Modal } from 'react-bootstrap';
-import { obtenerClientes, crearCliente } from '../Services/clienteService';
+import { useClientes } from "../hook/useClientes";
+
+
 import TablaClientes from '../components/common/TablaClientes';
 import BuscadorDeClientes from "../components/common/BuscadorDeClientes";
 import FormularioCliente from "../components/common/FormularioCliente";
 import FeedbackToast from "../components/FeedbackToast";
 
 const ClientesPage = () => {
-    const [clientes, setClientes] = useState([]);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState(null);
+
+    const { clientes, cargando, error, toast, handleGuardarCliente } = useClientes();
+
     const [busqueda, setBusqueda] = useState("");
     const [mostrarModal, setMostrarModal] = useState(false);
-    const [toast, setToast] = useState(null);
-
-    useEffect(() => {
-        const cargarDatos = async () => {
-            try {
-                const data = await obtenerClientes();
-                setClientes(data);
-                setCargando(false);
-            } catch (err) {
-                setError('Problema al cargar los clientes. Por favor intente de nuevo mas tarde...');
-                setCargando(false);
-            }
-        };
-
-        cargarDatos();
-    }, []);
 
         const clientesFiltrados = clientes.filter((cliente) => {
         const apellido = cliente.name.lastname.toLowerCase();
@@ -37,24 +23,11 @@ const ClientesPage = () => {
         return apellido.includes(textoBuscado) || ciudad.includes(textoBuscado);
     });
 
-    const handleGuardarCliente = async (nuevoCliente) => {
-        try {
-            const respuesta = await crearCliente(nuevoCliente);
+    const onGuardar = async (nuevoCliente) => {
+        const exito = await handleGuardarCliente(nuevoCliente);
+        if(exito) setMostrarModal(false);
+    }; 
 
-
-            // Generamos un Id random para evitar el error que tira en consola por problemas de keys
-            /*const idUnicoTemporal = Date.now(); 
-
-            setClientes((prev) => [...prev, { ...nuevoCliente, id: idUnicoTemporal }]);
-            setToast({ estado: 201, id: idUnicoTemporal });*/
-
-            setClientes((prev) => [...prev, { ...nuevoCliente, id: respuesta.id }]);
-            setToast({ estado: 201, id: respuesta.id });
-            setMostrarModal(false);
-        } catch (err) {
-            setToast({ estado: 500, id: null });
-        }
-    };
 
     return (
         <Container className="mt-5">
@@ -92,7 +65,7 @@ const ClientesPage = () => {
                     <Modal.Title>Nuevo Cliente</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <FormularioCliente onGuardar={handleGuardarCliente} />
+                    <FormularioCliente onGuardar={onGuardar} />
                 </Modal.Body>
             </Modal>
 

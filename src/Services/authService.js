@@ -1,35 +1,5 @@
-const usuarios = [
-    {
-      id: 1,
-      username: "carlos.mendez",
-      password: "soporte123",
-      nombre: "Carlos Mendez",
-      sector: "Soporte",
-    },
-    {
-      id: 2,
-      username: "laura.garcia",
-      password: "gerencia456",
-      nombre: "Laura Garcia",
-      sector: "Gerencia",
-    },
-    {
-      id: 3,
-      username: "martin.lopez",
-      password: "soporte789",
-      nombre: "Martin Lopez",
-      sector: "Soporte",
-    },
-    {
-      id: 4,
-      username: "ana.torres",
-      password: "gerencia321",
-      nombre: "Ana Torres",
-      sector: "Gerencia",
-    },
-  ];
-  
-  export function login(username, password, sector) {
+import usuarios from "../data/data";
+export function login(username, password, sector) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const usuario = usuarios.find(
