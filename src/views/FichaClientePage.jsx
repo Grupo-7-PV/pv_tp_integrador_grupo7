@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, Form, Container, Button, Modal } from "react-bootstrap";
 import { obtenerClientePorId, eliminarCliente} from "../services/clienteService";
 import { useAdmin } from '../hook/useAdmin';
+import FeedbackToast from "../components/FeedbackToast";
 
 
 const FichaCliente = () => {
@@ -12,6 +13,7 @@ const FichaCliente = () => {
     const { adminActivo } = useAdmin();
 
     const [mostrarModalEliminar, setMostrarModalEliminar] = useState(false);
+    const [toastEliminacion, setToastEliminacion] = useState(false);
 
     useEffect(() => {
         const cargarCliente = async () => {
@@ -28,7 +30,12 @@ const FichaCliente = () => {
               
              console.log(resultado);
 
-            navigate("/clientes");
+             setMostrarModalEliminar(false);
+             setToastEliminacion(true);
+
+             setTimeout(() => {
+                navigate("/clientes");
+             }, 1500);
 
         } catch (error) {
             console.error("Error al eliminar el cliente:", error);
@@ -114,6 +121,10 @@ const FichaCliente = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            {toastEliminacion && (
+                <FeedbackToast tipo="eliminacion" />
+            )}
         </Container>
     );
 };
