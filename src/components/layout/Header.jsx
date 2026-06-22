@@ -4,7 +4,7 @@ import {useAdmin} from '../../hook/useAdmin';
 
 const Header = () => {
     const navigate = useNavigate();
-    const {adminActivo, cerrarSesion}=useAdmin();
+    const { adminActivo, cerrarSesion } = useAdmin();
 
     const handleLogout = () => {
         cerrarSesion();
@@ -16,7 +16,8 @@ const Header = () => {
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="/">Sistema de Gestión</Navbar.Brand>
+                <Navbar.Brand href="/dashboard">Sistema de Gestión</Navbar.Brand>
+
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
 
