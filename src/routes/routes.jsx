@@ -4,6 +4,7 @@ import Login from '../views/Login';
 import RutaProtegida from '../components/RutaProtegida.jsx';
 import ClientesPage from '../views/ClientesPage.jsx';
 import FichaClientePage from '../views/FichaClientePage.jsx';
+import Dashboard from '../views/Dashboard.jsx';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
           {
             path: "clientes/:id",
             element: <FichaClientePage />
+          },
+          {
+            path: "dashboard",
+            element: <Dashboard />
           }
 
         ],
