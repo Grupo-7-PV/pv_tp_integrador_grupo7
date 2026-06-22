@@ -23,6 +23,12 @@
 
 /*-----------------CSS FEEDBACKTOAST-------------------*/
 
-.toast-container{
+.toast-container {
     margin-top: 60px;
+}
+
+.footer-fot {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
