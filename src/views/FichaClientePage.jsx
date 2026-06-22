@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Form, Container, Button } from "react-bootstrap";
+import { Card, Form, Container, Button, Modal } from "react-bootstrap";
 import { obtenerClientePorId, eliminarCliente} from "../services/clienteService";
 import { useAdmin } from '../hook/useAdmin';
 
@@ -10,6 +10,8 @@ const FichaCliente = () => {
     const navigate = useNavigate();
     const [cliente, setCliente] = useState(null);
     const { adminActivo } = useAdmin();
+
+    const [mostrarModalEliminar, setMostrarModalEliminar] = useState(false);
 
     useEffect(() => {
         const cargarCliente = async () => {
@@ -83,7 +85,7 @@ const FichaCliente = () => {
                         {adminActivo?.sector === "Gerencia" && (
                             <Button variant="danger" 
                             className="fw-bold px-4"
-                            onClick={handleEliminar}
+                            onClick={()=>setMostrarModalEliminar(true)}
                             >
                                 Eliminar Cliente
                             </Button>
@@ -91,6 +93,27 @@ const FichaCliente = () => {
                     </div>
                 </Card.Body>
             </Card>
+            <Modal 
+                show={mostrarModalEliminar} 
+                onHide={() => setMostrarModalEliminar(false)} 
+                centered
+            >
+                <Modal.Header closeButton className="bg-danger text-white">
+                    <Modal.Title>Confirmar Eliminación</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    ¿Estás seguro de que deseas eliminar al cliente <strong>{cliente.name?.firstname} {cliente.name?.lastname}</strong>? 
+                    Esta acción no se puede deshacer.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setMostrarModalEliminar(false)}>
+                        Cancelar
+                    </Button>
+                    <Button variant="danger" onClick={handleEliminar}>
+                        Sí, Eliminar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 };
