@@ -34,9 +34,7 @@ const Header = () => {
                                 </Nav.Link>
 
                             </Nav>
-                            <Nav.Link as={Link} to="/dashboard" className="text-white me-3">
-                                Dashboard
-                            </Nav.Link>
+
                             <Navbar.Text className="me-3 text-white">
                                 {adminActivo.nombre} | {adminActivo.sector}
                             </Navbar.Text>
